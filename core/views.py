@@ -8,3 +8,11 @@ def frontpage(request):
     return render(request, 'core/frontpage.html', {
         'products': products,
     })
+
+
+def shop(request):
+    products = Product.objects.all()
+
+    return render(request, 'core/shop.html', {
+        'products': products,
+    })
