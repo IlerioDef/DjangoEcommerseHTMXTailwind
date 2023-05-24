@@ -15,90 +15,46 @@
     <hr>
 
     <h2 class="my-6 text-xl "My orders</h2>
-    <div class="w-full mb-6 p-6 flex flex-wrap bg-gray-100 rounded-10">
-        <div class="mb-6 flex justify-between">
-            <a href="%">Order id: 1</a>
-        </div>
-<!-- PRODUCT BEGIN -->
-        <div class="mb-6 w-full">
-            <div class="product mb-6 flex pr-6">
-                <a href="#" class="w-1/4">
-                    <img class="hover:shadow-lg rounded-xl" src="https://placehold.co/240x240/png">
-                </a>
 
-                <div class="w-3/4 pl-6">
-                    <div class="flex justify-between">
-                        <a href="#" class="text-lg">Product name</a>
+    {% for order in request.user.orders.all %}
+        <div class="w-full mb-6 p-6 flex flex-wrap bg-gray-100 rounded-10">
+            <div class="mb-6 flex justify-between">
+                <a href="%">Order id: {{ order.id }}</a>
+            </div>
+    <!-- PRODUCT BEGIN -->
+            <div class="mb-6 w-full">
+                {% for item in order.items.all %}
+                    <div class="product mb-6 flex pr-6">
+                        <a href="#" class="w-1/4">
+                            <img class="hover:shadow-lg rounded-xl" src="{{ item.product.get_thumbnail }}">
+                        </a>
 
-                        <p class="mb-6 pt-1 text-gray-400">$ 9.99</p>
+                        <div class="w-3/4 pl-6">
+                            <div class="flex justify-between">
+                                <a href="#" class="text-lg">{{ item.product.name }}</a>
+
+                                <p class="mb-6 pt-1 text-gray-400">$ </p>
+                            </div>
+
+                            <hr>
+
+                            <div class="mt-6">
+                                Quantity: {{ item.quantity }}
+                            </div>
+
+
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+    <!-- PRODUCT END -->
 
-                    <hr>
-
-                    <div class="mt-6">
-                        Quantity: 1
-                    </div>
-
-
-                </div>
+            <div>
+                <p class="text-lg">Date: {{ order.created_at }}</p>
+                <p class="text-lg">Total: $9.99</p>
             </div>
         </div>
-<!-- PRODUCT END -->
-<!-- PRODUCT BEGIN -->
-        <div class="mb-6 w-full">
-            <div class="product mb-6 flex pr-6">
-                <a href="#" class="w-1/4">
-                    <img class="hover:shadow-lg rounded-xl" src="https://placehold.co/240x240/png">
-                </a>
-
-                <div class="w-3/4 pl-6">
-                    <div class="flex justify-between">
-                        <a href="#" class="text-lg">Product name</a>
-
-                        <p class="mb-6 pt-1 text-gray-400">$ 9.99</p>
-                    </div>
-
-                    <hr>
-
-                    <div class="mt-6">
-                        Quantity: 1
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-<!-- PRODUCT END -->
-<!-- PRODUCT BEGIN -->
-        <div class="mb-6 w-full">
-            <div class="product mb-6 flex pr-6">
-                <a href="#" class="w-1/4">
-                    <img class="hover:shadow-lg rounded-xl" src="https://placehold.co/240x240/png">
-                </a>
-
-                <div class="w-3/4 pl-6">
-                    <div class="flex justify-between">
-                        <a href="#" class="text-lg">Product name</a>
-
-                        <p class="mb-6 pt-1 text-gray-400">$ 9.99</p>
-                    </div>
-
-                    <hr>
-
-                    <div class="mt-6">
-                        Quantity: 1
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-<!-- PRODUCT END -->
-        <div class="">
-            <p class="text-lg">Date: 04.04.22</p>
-            <p class="text-lg">Total: $9.99</p>
-        </div>
-    </div>
+    {% endfor %}
 
     </div>
 {% endblock %}
