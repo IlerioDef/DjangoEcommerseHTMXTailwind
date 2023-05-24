@@ -31,6 +31,7 @@ SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 
 
 # Application definition

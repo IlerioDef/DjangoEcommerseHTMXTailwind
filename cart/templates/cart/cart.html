@@ -1,78 +1,36 @@
-{% block title %}Cart{% endblock %}
 {% extends 'core/base.html' %}
+{% block title %}Cart{% endblock %}
 {% block content %}
 
 <div class="max-w-6xl mx-auto flex flex-wrap items-start py-6 px-6 xl:px-0">
     <div class="products w-full lg:w-3/4">
+        {% for item in cart %}
 <!-- PRODUCT ITEM -->
         <div class="product mb-6 flex pr-6">
             <a href="#" class="w-1/4">
-                <img class="hover:shadow-lg rounded-xl" src="https://placehold.jp/240x240.png">
+
+                <img class="hover:shadow-lg rounded-xl" src="{{ item.product.get_thumbnail }}">
             </a>
 
             <div class="w-3/4 pl-6">
                 <div class="flex justify-between">
-                    <a href="#" class="text-lg">Product name</a>
+                    <a href="#" class="text-lg">{{ item.product.name }}</a>
 
-                    <span class="mb-6 pt-1 text-gray-400">$9.99</span>
+                    <span class="mb-6 pt-1 text-gray-400">${{ item.total_price }}</span>
                 </div>
 
                 <hr>
 
                 <div class="quantity mt-6 flex items-center space-x-4">
                     <a href="#" class="p-3 bg-gray-100">-</a>
-                    <span>2</span>
+                    <span>{{ item.quantity }}</span>
                     <a href="#" class="p-3 bg-gray-100">+</a>
                 </div>
             </div>
         </div>
 <!-- END PRODUCT ITEM -->
-<!-- PRODUCT ITEM -->
-        <div class="product mb-6 flex pr-6">
-            <a href="#" class="w-1/4">
-                <img class="hover:shadow-lg rounded-xl" src="https://placehold.jp/240x240.png">
-            </a>
+        {% endfor %}
 
-            <div class="w-3/4 pl-6">
-                <div class="flex justify-between">
-                    <a href="#" class="text-lg">Product name</a>
-
-                    <span class="mb-6 pt-1 text-gray-400">$9.99</span>
-                </div>
-
-                <hr>
-
-                <div class="quantity mt-6 flex items-center space-x-4">
-                    <a href="#" class="p-3 bg-gray-100">-</a>
-                    <span>2</span>
-                    <a href="#" class="p-3 bg-gray-100">+</a>
-                </div>
-            </div>
-        </div>
-<!-- END PRODUCT ITEM -->
-<!-- PRODUCT ITEM -->
-        <div class="product mb-6 flex pr-6">
-            <a href="#" class="w-1/4">
-                <img class="hover:shadow-lg rounded-xl" src="https://placehold.jp/240x240.png">
-            </a>
-
-            <div class="w-3/4 pl-6">
-                <div class="flex justify-between">
-                    <a href="#" class="text-lg">Product name</a>
-
-                    <span class="mb-6 pt-1 text-gray-400">$9.99</span>
-                </div>
-
-                <hr>
-
-                <div class="quantity mt-6 flex items-center space-x-4">
-                    <a href="#" class="p-3 bg-gray-100">-</a>
-                    <span>2</span>
-                    <a href="#" class="p-3 bg-gray-100">+</a>
-                </div>
-            </div>
-        </div>
-<!-- END PRODUCT ITEM -->
     </div>
 
 <!-- SUMMARY NB:deleted w-full -->
@@ -81,10 +39,10 @@
 
         <div class="mb-6 flex justify-between">
             <span class="font-semibold">Total</span>
-            <span>$9.99</span>
+            <span>${{ cart.get_total_cost }}</span>
         </div>
 
-        <a href="#" class="inline-block px-8 py-4 rounded-xl bg-purple-500 hover:bg-purple-700 text-white">Checkout</a>
+        <a href="{% url 'checkout' %}" class="inline-block px-8 py-4 rounded-xl bg-purple-500 hover:bg-purple-700 text-white">Checkout</a>
 
     </div>
 </div>
