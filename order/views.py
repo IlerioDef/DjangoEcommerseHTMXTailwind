@@ -3,7 +3,6 @@ import stripe
 
 from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
 
 from cart.cart import Cart
 from .models import Order, OrderItem
@@ -20,7 +19,7 @@ def start_order(request):
         product = item['product']
         total_price += product.price * int(item['quantity'])
 
-        obj = {
+        items.append({
             'price_data': {
                 'currency': 'usd',
                 'product_data': {
@@ -29,9 +28,7 @@ def start_order(request):
                 'unit_amount': product.price,
             },
             'quantity': item['quantity']
-        }
-
-        items.append(obj)
+        })
 
     stripe.api_key = settings.STRIPE_API_KEY_HIDDEN
     session = stripe.checkout.Session.create(
@@ -43,26 +40,29 @@ def start_order(request):
     )
     payment_intent = session.payment_intent
 
-    first_name = data['first_name']
-    last_name = data['last_name']
-    email = data['email']
-    address = data['address']
-    zipcode = data['zipcode']
-    place = data['place']
-    phone = data['phone']
-
-    order = Order.objects.create(user=request.user, first_name=first_name, last_name=last_name, email=email, phone=phone, address=address, zipcode=zipcode, place=place)
-    order.payment_intent = payment_intent
-    order.paid_amount = total_price
-    order.paid = True
-    order.save()
+    order = Order.objects.create(
+        user=request.user,
+        first_name=data['first_name'],
+        last_name=data['last_name'],
+        email=data['email'],
+        phone=data['phone'],
+        address=data['address'],
+        zipcode=data['zipcode'],
+        place=data['place'],
+        payment_intent=payment_intent,
+        paid=True,
+        paid_amount=total_price,
+    )
 
     for item in cart:
         product = item['product']
         quantity = int(item['quantity'])
         price = product.price * quantity
 
-        item = OrderItem.objects.create(order=order, product=product, price=price, quantity=quantity)
+        item = OrderItem.objects.create(order=order,
+                                        product=product,
+                                        price=price,
+                                        quantity=quantity)
 
     cart.clear()
 
